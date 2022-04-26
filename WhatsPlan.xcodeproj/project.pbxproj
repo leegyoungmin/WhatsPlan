@@ -9,23 +9,30 @@
 /* Begin PBXBuildFile section */
 		18E990AB2817C7FE00AE5553 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AA2817C7FE00AE5553 /* AppDelegate.swift */; };
 		18E990AD2817C7FE00AE5553 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */; };
-		18E990AF2817C7FE00AE5553 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AE2817C7FE00AE5553 /* ViewController.swift */; };
-		18E990B22817C7FE00AE5553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18E990B02817C7FE00AE5553 /* Main.storyboard */; };
+		18E990AF2817C7FE00AE5553 /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AE2817C7FE00AE5553 /* ContentViewController.swift */; };
 		18E990B52817C7FE00AE5553 /* WhatsPlan.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 18E990B32817C7FE00AE5553 /* WhatsPlan.xcdatamodeld */; };
 		18E990B72817C7FE00AE5553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18E990B62817C7FE00AE5553 /* Assets.xcassets */; };
 		18E990BA2817C7FE00AE5553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18E990B82817C7FE00AE5553 /* LaunchScreen.storyboard */; };
+		18E990C42817CA5700AE5553 /* plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990C32817CA5700AE5553 /* plan.swift */; };
+		18E990C62817CF7E00AE5553 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990C52817CF7E00AE5553 /* TodayViewController.swift */; };
+		18E990C82817CFCF00AE5553 /* PastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990C72817CFCF00AE5553 /* PastViewController.swift */; };
+		18E990CB2817D48900AE5553 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 18E990CA2817D48900AE5553 /* SnapKit */; };
+		18E990CE2817D6B400AE5553 /* CustomCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990CD2817D6B400AE5553 /* CustomCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		18E990A72817C7FE00AE5553 /* WhatsPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E990AA2817C7FE00AE5553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		18E990AE2817C7FE00AE5553 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		18E990B12817C7FE00AE5553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		18E990AE2817C7FE00AE5553 /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		18E990B42817C7FE00AE5553 /* WhatsPlan.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatsPlan.xcdatamodel; sourceTree = "<group>"; };
 		18E990B62817C7FE00AE5553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18E990B92817C7FE00AE5553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18E990BB2817C7FE00AE5553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18E990C32817CA5700AE5553 /* plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = plan.swift; sourceTree = "<group>"; };
+		18E990C52817CF7E00AE5553 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		18E990C72817CFCF00AE5553 /* PastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastViewController.swift; sourceTree = "<group>"; };
+		18E990CD2817D6B400AE5553 /* CustomCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18E990CB2817D48900AE5553 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,16 +66,27 @@
 		18E990A92817C7FE00AE5553 /* WhatsPlan */ = {
 			isa = PBXGroup;
 			children = (
+				18E990CC2817D69200AE5553 /* Views */,
 				18E990AA2817C7FE00AE5553 /* AppDelegate.swift */,
 				18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */,
-				18E990AE2817C7FE00AE5553 /* ViewController.swift */,
-				18E990B02817C7FE00AE5553 /* Main.storyboard */,
+				18E990AE2817C7FE00AE5553 /* ContentViewController.swift */,
 				18E990B62817C7FE00AE5553 /* Assets.xcassets */,
 				18E990B82817C7FE00AE5553 /* LaunchScreen.storyboard */,
 				18E990BB2817C7FE00AE5553 /* Info.plist */,
 				18E990B32817C7FE00AE5553 /* WhatsPlan.xcdatamodeld */,
+				18E990C32817CA5700AE5553 /* plan.swift */,
 			);
 			path = WhatsPlan;
+			sourceTree = "<group>";
+		};
+		18E990CC2817D69200AE5553 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18E990C52817CF7E00AE5553 /* TodayViewController.swift */,
+				18E990C72817CFCF00AE5553 /* PastViewController.swift */,
+				18E990CD2817D6B400AE5553 /* CustomCellView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +105,9 @@
 			dependencies = (
 			);
 			name = WhatsPlan;
+			packageProductDependencies = (
+				18E990CA2817D48900AE5553 /* SnapKit */,
+			);
 			productName = WhatsPlan;
 			productReference = 18E990A72817C7FE00AE5553 /* WhatsPlan.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +136,9 @@
 				Base,
 			);
 			mainGroup = 18E9909E2817C7FE00AE5553;
+			packageReferences = (
+				18E990C92817D48900AE5553 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 18E990A82817C7FE00AE5553 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -130,7 +155,6 @@
 			files = (
 				18E990BA2817C7FE00AE5553 /* LaunchScreen.storyboard in Resources */,
 				18E990B72817C7FE00AE5553 /* Assets.xcassets in Resources */,
-				18E990B22817C7FE00AE5553 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,24 +165,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18E990C82817CFCF00AE5553 /* PastViewController.swift in Sources */,
 				18E990B52817C7FE00AE5553 /* WhatsPlan.xcdatamodeld in Sources */,
-				18E990AF2817C7FE00AE5553 /* ViewController.swift in Sources */,
+				18E990C42817CA5700AE5553 /* plan.swift in Sources */,
+				18E990C62817CF7E00AE5553 /* TodayViewController.swift in Sources */,
+				18E990AF2817C7FE00AE5553 /* ContentViewController.swift in Sources */,
 				18E990AB2817C7FE00AE5553 /* AppDelegate.swift in Sources */,
 				18E990AD2817C7FE00AE5553 /* SceneDelegate.swift in Sources */,
+				18E990CE2817D6B400AE5553 /* CustomCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		18E990B02817C7FE00AE5553 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				18E990B12817C7FE00AE5553 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		18E990B82817C7FE00AE5553 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -296,7 +316,6 @@
 				INFOPLIST_FILE = WhatsPlan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -324,7 +343,6 @@
 				INFOPLIST_FILE = WhatsPlan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -362,6 +380,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		18E990C92817D48900AE5553 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		18E990CA2817D48900AE5553 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 18E990C92817D48900AE5553 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		18E990B32817C7FE00AE5553 /* WhatsPlan.xcdatamodeld */ = {
