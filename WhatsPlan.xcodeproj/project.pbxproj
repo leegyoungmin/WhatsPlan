@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		186ADF75281959DF00C97A4C /* AddTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186ADF74281959DF00C97A4C /* AddTodoViewController.swift */; };
 		18E990AB2817C7FE00AE5553 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AA2817C7FE00AE5553 /* AppDelegate.swift */; };
 		18E990AD2817C7FE00AE5553 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */; };
 		18E990AF2817C7FE00AE5553 /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E990AE2817C7FE00AE5553 /* ContentViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		186ADF74281959DF00C97A4C /* AddTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoViewController.swift; sourceTree = "<group>"; };
 		18E990A72817C7FE00AE5553 /* WhatsPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E990AA2817C7FE00AE5553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				18E990C52817CF7E00AE5553 /* TodayViewController.swift */,
 				18E990C72817CFCF00AE5553 /* PastViewController.swift */,
 				18E990CD2817D6B400AE5553 /* CustomCellView.swift */,
+				186ADF74281959DF00C97A4C /* AddTodoViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 				18E990B52817C7FE00AE5553 /* WhatsPlan.xcdatamodeld in Sources */,
 				18E990C42817CA5700AE5553 /* plan.swift in Sources */,
 				18E990C62817CF7E00AE5553 /* TodayViewController.swift in Sources */,
+				186ADF75281959DF00C97A4C /* AddTodoViewController.swift in Sources */,
 				18E990AF2817C7FE00AE5553 /* ContentViewController.swift in Sources */,
 				18E990AB2817C7FE00AE5553 /* AppDelegate.swift in Sources */,
 				18E990AD2817C7FE00AE5553 /* SceneDelegate.swift in Sources */,

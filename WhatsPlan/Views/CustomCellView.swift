@@ -23,6 +23,13 @@ class CustomCellView: UITableViewCell {
         return date
     }()
     
+    lazy var toggleButton:UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "circle"), for: .normal)
+        button.addTarget(self, action: #selector(touchUpToggle), for: .touchUpInside)
+        return button
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpCell()
@@ -35,7 +42,7 @@ class CustomCellView: UITableViewCell {
     
     
     func setUpCell(){
-        [title,date].forEach{
+        [title,date,toggleButton].forEach{
             contentView.addSubview($0)
         }
         
@@ -48,6 +55,20 @@ class CustomCellView: UITableViewCell {
             $0.top.equalTo(title.snp.bottom)
             $0.bottom.equalTo(contentView.safeAreaInsets.bottom).inset(20)
             $0.leading.equalTo(title.snp.leading)
+        }
+        toggleButton.snp.makeConstraints{
+            $0.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    @objc func touchUpToggle(_ sender:UIButton){
+        if sender.isSelected{
+            sender.isSelected = false
+            sender.setImage(UIImage(systemName: "circle"), for: .normal)
+        }else{
+            sender.isSelected = true
+            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
         }
     }
 }

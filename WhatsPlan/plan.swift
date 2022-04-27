@@ -11,6 +11,4 @@ struct plan{
     var id = UUID()
     var name:String
     var time:Date
-    
-
 }
