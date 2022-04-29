@@ -16,13 +16,6 @@ class CustomCellView: UITableViewCell {
         return title
     }()
     
-    lazy var date:UILabel = {
-        let date = UILabel()
-        date.textColor = .secondaryLabel
-        date.font = .systemFont(ofSize: 14, weight: .light)
-        return date
-    }()
-    
     lazy var toggleButton:UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "circle"), for: .normal)
@@ -42,23 +35,20 @@ class CustomCellView: UITableViewCell {
     
     
     func setUpCell(){
-        [title,date,toggleButton].forEach{
+        [title,toggleButton].forEach{
             contentView.addSubview($0)
         }
         
         title.snp.makeConstraints{
             $0.top.equalTo(contentView.safeAreaInsets.top)
             $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
+            $0.bottom.equalTo(contentView.safeAreaInsets.bottom)
         }
         
-        date.snp.makeConstraints{
-            $0.top.equalTo(title.snp.bottom)
-            $0.bottom.equalTo(contentView.safeAreaInsets.bottom).inset(20)
-            $0.leading.equalTo(title.snp.leading)
-        }
         toggleButton.snp.makeConstraints{
             $0.top.bottom.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -66,9 +56,21 @@ class CustomCellView: UITableViewCell {
         if sender.isSelected{
             sender.isSelected = false
             sender.setImage(UIImage(systemName: "circle"), for: .normal)
+            self.title.attributedText = title.text?.strikeThrough(0)
+            self.title.textColor = .black
         }else{
             sender.isSelected = true
             sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            self.title.attributedText = title.text?.strikeThrough(1)
+            self.title.textColor = .secondaryLabel
         }
+    }
+}
+
+extension String{
+    func strikeThrough(_ value:NSUnderlineStyle.RawValue) -> NSAttributedString {
+        let attributeString = NSMutableAttributedString(string: self)
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: value, range: NSMakeRange(0, attributeString.length))
+        return attributeString
     }
 }
