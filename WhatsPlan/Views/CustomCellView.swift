@@ -7,8 +7,15 @@
 
 import SnapKit
 import UIKit
+import CoreData
+
+protocol CustomCellDelegate:TodayViewController{
+    func customCell(_ customCell:CustomCellView,didTapButton button:UIButton)
+}
 
 class CustomCellView: UITableViewCell {
+    weak var delegate:CustomCellDelegate?
+    var id:UUID!
     lazy var title:UILabel = {
         let title = UILabel()
         title.textColor = .black
@@ -23,9 +30,11 @@ class CustomCellView: UITableViewCell {
         return button
     }()
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpCell()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -64,6 +73,8 @@ class CustomCellView: UITableViewCell {
             self.title.attributedText = title.text?.strikeThrough(1)
             self.title.textColor = .secondaryLabel
         }
+        
+        delegate?.customCell(self, didTapButton: sender)
     }
 }
 
