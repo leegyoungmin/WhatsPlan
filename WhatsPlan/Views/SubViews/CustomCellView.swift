@@ -18,9 +18,9 @@ protocol CustomCellDelegate:TodayViewController{
 class CustomCellView: UITableViewCell {
     weak var delegate:CustomCellDelegate?
     var id:UUID!
-    lazy var title:UILabel = {
-        let title = UILabel()
-        title.textColor = .black
+    lazy var title:ToggleLabel = {
+        let title = ToggleLabel()
+        title.textColor = .label
         title.font = UIFont.systemFont(ofSize: 20,weight: .heavy)
         return title
     }()
@@ -31,6 +31,11 @@ class CustomCellView: UITableViewCell {
         return toggleButton
     }()
     
+    lazy var separatorView:UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemBackground
+        return view
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,26 +50,30 @@ class CustomCellView: UITableViewCell {
     
     
     func setUpCell(){
-        [title,toggleButton].forEach{
+        [title,toggleButton,separatorView].forEach{
             contentView.addSubview($0)
         }
         
         title.snp.makeConstraints{
             $0.top.equalTo(contentView.safeAreaInsets.top)
-            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
-            $0.bottom.equalTo(contentView.safeAreaInsets.bottom)
+            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(5)
         }
         
         toggleButton.snp.makeConstraints{
             $0.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+        separatorView.snp.makeConstraints{
+            $0.leading.equalTo(contentView.snp.leading)
+            $0.trailing.equalTo(toggleButton.snp.trailing)
+            $0.top.equalTo(title.snp.bottom)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     
     @objc func touchUpToggle(_ sender:ToggleButton){
-        sender.isOn.toggle()
-        changeText(sender)
         delegate?.customCell(self, didTapButton: sender)
     }
 }
@@ -84,7 +93,7 @@ extension CustomCellView{
             self.title.textColor = .secondaryLabel
         }else{
             self.title.attributedText = title.text?.strikeThrough(0)
-            self.title.textColor = .black
+            self.title.textColor = .label
         }
     }
 }

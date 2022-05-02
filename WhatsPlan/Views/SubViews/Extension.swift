@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 import RxCocoa
 import RxSwift
 
@@ -66,6 +67,34 @@ class RxTableViewController:UIViewController{
     }
 }
 
+class ToggleLabel:UILabel{
+    var isOn:Bool = false{
+        didSet{
+            setting()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setting()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        setting()
+    }
+    func setting(){
+        switch isOn{
+        case true:
+            self.attributedText = self.text?.strikeThrough(1)
+            self.textColor = .secondaryLabel
+        case false:
+            self.attributedText = self.text?.strikeThrough(0)
+            self.textColor = .label
+        }
+    }
+}
+
 class ToggleButton:UIButton{
     
     var isOn:Bool = false{
@@ -92,4 +121,49 @@ class ToggleButton:UIButton{
             self.setImage(UIImage(systemName: "circle"), for: .normal)
         }
     }
+}
+
+class TodayCustomHeaderView:UITableViewHeaderFooterView{
+    var isDone:Bool = false{
+        didSet{
+            convertTitle()
+        }
+    }
+    lazy var title:UILabel = {
+        let title = UILabel()
+        title.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
+        title.textColor = UIColor(named: "AccentColor")
+        return title
+    }()
+    
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setUpView()
+        convertTitle()
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        setUpView()
+        convertTitle()
+    }
+    
+    func setUpView(){
+        contentView.addSubview(title)
+        contentView.backgroundColor = .clear
+        title.snp.makeConstraints{
+            $0.leading.equalTo(contentView.snp.leading)
+            $0.top.equalTo(contentView.snp.top)
+            $0.bottom.equalTo(contentView.snp.bottom)
+        }
+    }
+    
+    func convertTitle(){
+        if isDone{
+            title.text = "완료 일정"
+        }else{
+            title.text = "미완료 일정"
+        }
+    }
+    
+    
 }
