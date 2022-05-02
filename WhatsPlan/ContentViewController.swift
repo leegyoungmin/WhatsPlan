@@ -25,6 +25,8 @@ class ContentViewController: UITabBarController {
     func setUpViews(){
         let first = UINavigationController(rootViewController: TodayViewController())
         let second = UINavigationController(rootViewController: PastViewConrtoller())
+        first.tabBarItem = UITabBarItem(title: "오늘할일", image: UIImage(systemName: "doc.text.image"), tag: 1)
+        second.tabBarItem = UITabBarItem(title: "과거 이력", image: UIImage(systemName: "clock.arrow.circlepath"), tag: 2)
         
         let tabs = [first,second]
         
@@ -33,7 +35,3 @@ class ContentViewController: UITabBarController {
     }
     
 }
-
-
-
-

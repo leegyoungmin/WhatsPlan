@@ -19,7 +19,7 @@ class SectionHeaderView:UITableViewHeaderFooterView{
     
     let subTitle:UILabel = {
         let subTitle = UILabel()
-        subTitle.font = .systemFont(ofSize: 10)
+        subTitle.font = .systemFont(ofSize: 10, weight: .bold)
         subTitle.textColor = UIColor(named: "AccentColor")
         return subTitle
     }()
@@ -40,14 +40,14 @@ class SectionHeaderView:UITableViewHeaderFooterView{
         }
         
         title.snp.makeConstraints{
-            $0.top.equalTo(contentView.safeAreaInsets.top).inset(10)
+            $0.top.equalTo(contentView.safeAreaInsets.top)
             $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
         }
         
         subTitle.snp.makeConstraints{
-            $0.bottom.equalTo(contentView.safeAreaInsets.bottom).inset(10)
             $0.top.equalTo(title.snp.bottom)
-            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
+            $0.leading.equalTo(title.snp.leading)
+            $0.bottom.equalTo(contentView.safeAreaInsets.bottom).inset(5)
         }
     }
 }

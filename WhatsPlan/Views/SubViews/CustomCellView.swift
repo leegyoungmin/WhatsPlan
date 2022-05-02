@@ -8,6 +8,8 @@
 import SnapKit
 import UIKit
 import CoreData
+import RxSwift
+import RxCocoa
 
 protocol CustomCellDelegate:TodayViewController{
     func customCell(_ customCell:CustomCellView,didTapButton button:UIButton)
@@ -23,11 +25,10 @@ class CustomCellView: UITableViewCell {
         return title
     }()
     
-    lazy var toggleButton:UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "circle"), for: .normal)
-        button.addTarget(self, action: #selector(touchUpToggle), for: .touchUpInside)
-        return button
+    lazy var toggleButton:ToggleButton = {
+        let toggleButton = ToggleButton()
+        toggleButton.addTarget(self, action: #selector(touchUpToggle), for: .touchUpInside)
+        return toggleButton
     }()
     
     
@@ -61,19 +62,9 @@ class CustomCellView: UITableViewCell {
         }
     }
     
-    @objc func touchUpToggle(_ sender:UIButton){
-        if sender.isSelected{
-            sender.isSelected = false
-            sender.setImage(UIImage(systemName: "circle"), for: .normal)
-            self.title.attributedText = title.text?.strikeThrough(0)
-            self.title.textColor = .black
-        }else{
-            sender.isSelected = true
-            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-            self.title.attributedText = title.text?.strikeThrough(1)
-            self.title.textColor = .secondaryLabel
-        }
-        
+    @objc func touchUpToggle(_ sender:ToggleButton){
+        sender.isOn.toggle()
+        changeText(sender)
         delegate?.customCell(self, didTapButton: sender)
     }
 }
@@ -83,5 +74,17 @@ extension String{
         let attributeString = NSMutableAttributedString(string: self)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: value, range: NSMakeRange(0, attributeString.length))
         return attributeString
+    }
+}
+
+extension CustomCellView{
+    func changeText(_ sender:ToggleButton){
+        if sender.isOn{
+            self.title.attributedText = title.text?.strikeThrough(1)
+            self.title.textColor = .secondaryLabel
+        }else{
+            self.title.attributedText = title.text?.strikeThrough(0)
+            self.title.textColor = .black
+        }
     }
 }

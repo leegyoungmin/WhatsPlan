@@ -65,3 +65,31 @@ class RxTableViewController:UIViewController{
         }.disposed(by: disposeBag)
     }
 }
+
+class ToggleButton:UIButton{
+    
+    var isOn:Bool = false{
+        didSet{
+            setting()
+        }
+    }
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setting()
+        
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setting()
+    }
+    
+    func setting(){
+        switch isOn{
+        case true:
+            self.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            
+        case false:
+            self.setImage(UIImage(systemName: "circle"), for: .normal)
+        }
+    }
+}
