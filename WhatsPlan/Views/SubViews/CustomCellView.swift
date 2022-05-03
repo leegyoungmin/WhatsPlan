@@ -18,8 +18,8 @@ protocol CustomCellDelegate:TodayViewController{
 class CustomCellView: UITableViewCell {
     weak var delegate:CustomCellDelegate?
     var id:UUID!
-    lazy var title:UILabel = {
-        let title = UILabel()
+    lazy var title:ToggleLabel = {
+        let title = ToggleLabel()
         title.textColor = .black
         title.font = UIFont.systemFont(ofSize: 20,weight: .heavy)
         return title
@@ -29,6 +29,11 @@ class CustomCellView: UITableViewCell {
         let toggleButton = ToggleButton()
         toggleButton.addTarget(self, action: #selector(touchUpToggle), for: .touchUpInside)
         return toggleButton
+    }()
+    lazy var seperator:UILabel = {
+        let seperator = UILabel()
+        seperator.backgroundColor = .secondarySystemBackground
+        return seperator
     }()
     
     
@@ -45,7 +50,7 @@ class CustomCellView: UITableViewCell {
     
     
     func setUpCell(){
-        [title,toggleButton].forEach{
+        [title,toggleButton,seperator].forEach{
             contentView.addSubview($0)
         }
         
@@ -60,11 +65,18 @@ class CustomCellView: UITableViewCell {
             $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
+        seperator.snp.makeConstraints{
+            $0.leading.equalTo(title.snp.leading)
+            $0.trailing.equalTo(toggleButton.snp.trailing)
+            $0.bottom.equalTo(contentView.snp.bottom)
+            $0.height.equalTo(1)
+        }
     }
     
     @objc func touchUpToggle(_ sender:ToggleButton){
         sender.isOn.toggle()
-        changeText(sender)
+        self.title.isOn = sender.isOn
+        
         delegate?.customCell(self, didTapButton: sender)
     }
 }
@@ -74,17 +86,5 @@ extension String{
         let attributeString = NSMutableAttributedString(string: self)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: value, range: NSMakeRange(0, attributeString.length))
         return attributeString
-    }
-}
-
-extension CustomCellView{
-    func changeText(_ sender:ToggleButton){
-        if sender.isOn{
-            self.title.attributedText = title.text?.strikeThrough(1)
-            self.title.textColor = .secondaryLabel
-        }else{
-            self.title.attributedText = title.text?.strikeThrough(0)
-            self.title.textColor = .black
-        }
     }
 }
