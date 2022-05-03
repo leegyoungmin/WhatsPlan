@@ -35,12 +35,19 @@ class PastViewConrtoller:UIViewController{
         return container
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("view will Appeard")
+        fetchData()
+        self.pastTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("View did load")
         fetchData()
         setUpNavigationBar()
         setUpViews()
-        print(self.plans)
     }
     
     func setUpNavigationBar(){

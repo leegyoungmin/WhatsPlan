@@ -29,8 +29,6 @@ class ContentViewController: UITabBarController {
         second.tabBarItem = UITabBarItem(title: "과거 이력", image: UIImage(systemName: "clock.arrow.circlepath"), tag: 2)
         
         let tabs = [first,second]
-        
-        self.tabBar.backgroundColor = .white
         self.setViewControllers(tabs, animated: true)
     }
     

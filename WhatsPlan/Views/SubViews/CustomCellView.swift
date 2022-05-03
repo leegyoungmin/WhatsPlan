@@ -20,7 +20,7 @@ class CustomCellView: UITableViewCell {
     var id:UUID!
     lazy var title:ToggleLabel = {
         let title = ToggleLabel()
-        title.textColor = .black
+        title.textColor = .label
         title.font = UIFont.systemFont(ofSize: 20,weight: .heavy)
         return title
     }()
@@ -36,6 +36,11 @@ class CustomCellView: UITableViewCell {
         return seperator
     }()
     
+    lazy var separatorView:UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemBackground
+        return view
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,14 +61,20 @@ class CustomCellView: UITableViewCell {
         
         title.snp.makeConstraints{
             $0.top.equalTo(contentView.safeAreaInsets.top)
-            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
-            $0.bottom.equalTo(contentView.safeAreaInsets.bottom)
+            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(5)
         }
         
         toggleButton.snp.makeConstraints{
             $0.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+        separatorView.snp.makeConstraints{
+            $0.leading.equalTo(contentView.snp.leading)
+            $0.trailing.equalTo(toggleButton.snp.trailing)
+            $0.top.equalTo(title.snp.bottom)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
         seperator.snp.makeConstraints{
             $0.leading.equalTo(title.snp.leading)
@@ -74,9 +85,10 @@ class CustomCellView: UITableViewCell {
     }
     
     @objc func touchUpToggle(_ sender:ToggleButton){
+
         sender.isOn.toggle()
         self.title.isOn = sender.isOn
-        
+
         delegate?.customCell(self, didTapButton: sender)
     }
 }

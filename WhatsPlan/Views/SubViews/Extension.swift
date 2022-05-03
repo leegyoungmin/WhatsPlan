@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 import RxCocoa
 import RxSwift
 
@@ -66,6 +67,34 @@ class RxTableViewController:UIViewController{
     }
 }
 
+class ToggleLabel:UILabel{
+    var isOn:Bool = false{
+        didSet{
+            setting()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setting()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        setting()
+    }
+    func setting(){
+        switch isOn{
+        case true:
+            self.attributedText = self.text?.strikeThrough(1)
+            self.textColor = .secondaryLabel
+        case false:
+            self.attributedText = self.text?.strikeThrough(0)
+            self.textColor = .label
+        }
+    }
+}
+
 class ToggleButton:UIButton{
     
     var isOn:Bool = false{
@@ -93,7 +122,6 @@ class ToggleButton:UIButton{
         }
     }
 }
-
 
 class ToggleLabel:UILabel{
     var isOn:Bool = false{
@@ -160,4 +188,5 @@ extension UIViewController{
             }
         }
     }
+
 }
