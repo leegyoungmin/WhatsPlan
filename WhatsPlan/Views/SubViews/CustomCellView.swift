@@ -30,6 +30,11 @@ class CustomCellView: UITableViewCell {
         toggleButton.addTarget(self, action: #selector(touchUpToggle), for: .touchUpInside)
         return toggleButton
     }()
+    lazy var seperator:UILabel = {
+        let seperator = UILabel()
+        seperator.backgroundColor = .secondarySystemBackground
+        return seperator
+    }()
     
     lazy var separatorView:UIView = {
         let view = UIView()
@@ -50,7 +55,7 @@ class CustomCellView: UITableViewCell {
     
     
     func setUpCell(){
-        [title,toggleButton,separatorView].forEach{
+        [title,toggleButton,seperator].forEach{
             contentView.addSubview($0)
         }
         
@@ -71,9 +76,19 @@ class CustomCellView: UITableViewCell {
             $0.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
+        seperator.snp.makeConstraints{
+            $0.leading.equalTo(title.snp.leading)
+            $0.trailing.equalTo(toggleButton.snp.trailing)
+            $0.bottom.equalTo(contentView.snp.bottom)
+            $0.height.equalTo(1)
+        }
     }
     
     @objc func touchUpToggle(_ sender:ToggleButton){
+
+        sender.isOn.toggle()
+        self.title.isOn = sender.isOn
+
         delegate?.customCell(self, didTapButton: sender)
     }
 }
@@ -83,17 +98,5 @@ extension String{
         let attributeString = NSMutableAttributedString(string: self)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: value, range: NSMakeRange(0, attributeString.length))
         return attributeString
-    }
-}
-
-extension CustomCellView{
-    func changeText(_ sender:ToggleButton){
-        if sender.isOn{
-            self.title.attributedText = title.text?.strikeThrough(1)
-            self.title.textColor = .secondaryLabel
-        }else{
-            self.title.attributedText = title.text?.strikeThrough(0)
-            self.title.textColor = .label
-        }
     }
 }

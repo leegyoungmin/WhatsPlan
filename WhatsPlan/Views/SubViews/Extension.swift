@@ -123,47 +123,70 @@ class ToggleButton:UIButton{
     }
 }
 
-class TodayCustomHeaderView:UITableViewHeaderFooterView{
-    var isDone:Bool = false{
+class ToggleLabel:UILabel{
+    var isOn:Bool = false{
         didSet{
-            convertTitle()
+            setting()
         }
     }
-    lazy var title:UILabel = {
-        let title = UILabel()
-        title.font = UIFont.systemFont(ofSize: 30, weight: .heavy)
-        title.textColor = UIColor(named: "AccentColor")
-        return title
-    }()
     
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        setUpView()
-        convertTitle()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setting()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        setUpView()
-        convertTitle()
+        setting()
     }
     
-    func setUpView(){
-        contentView.addSubview(title)
-        contentView.backgroundColor = .clear
-        title.snp.makeConstraints{
-            $0.leading.equalTo(contentView.snp.leading)
-            $0.top.equalTo(contentView.snp.top)
-            $0.bottom.equalTo(contentView.snp.bottom)
+    
+    func setting(){
+        switch isOn{
+        case true:
+            self.attributedText = self.text?.strikeThrough(1)
+            self.textColor = .secondaryLabel
+        case false:
+            self.attributedText = self.text?.strikeThrough(0)
+            self.textColor = .label
+        }
+    }
+}
+
+extension UIViewController{
+    func setKeyBoardObserver(){
+        NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyBoardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    @objc func keyBoardWillShow(notification:NSNotification){
+        if self.view.window?.frame.origin.y == 0{
+            if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
+                let keyBoardRect = keyboardFrame.cgRectValue
+                let keyBoardHeight = keyBoardRect.height
+                
+                UIView.animate(withDuration: 1) {
+                    print(self.view.debugDescription)
+                    print("up Key board")
+                    self.view.window?.frame.origin.y -= keyBoardHeight
+                }
+            }
         }
     }
     
-    func convertTitle(){
-        if isDone{
-            title.text = "완료 일정"
-        }else{
-            title.text = "미완료 일정"
+    @objc func keyBoardWillHide(notification:NSNotification){
+        if self.view.window?.frame.origin.y != 0{
+            if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
+                let keyBoardRect = keyboardFrame.cgRectValue
+                let keyBoardHeight = keyBoardRect.height
+                
+                UIView.animate(withDuration: 1) {
+                    print("down key board")
+                    self.view.window?.frame.origin.y += keyBoardHeight
+                }
+
+            }
         }
     }
-    
-    
+
 }
