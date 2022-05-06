@@ -61,20 +61,13 @@ class CustomCellView: UITableViewCell {
         
         title.snp.makeConstraints{
             $0.top.equalTo(contentView.safeAreaInsets.top)
-            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(5)
+            $0.leading.equalTo(contentView.safeAreaInsets.left).inset(20)
+            $0.bottom.equalTo(contentView.safeAreaInsets.bottom)
         }
         
         toggleButton.snp.makeConstraints{
-            $0.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
-        separatorView.snp.makeConstraints{
-            $0.leading.equalTo(contentView.snp.leading)
-            $0.trailing.equalTo(toggleButton.snp.trailing)
-            $0.top.equalTo(title.snp.bottom)
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.top.bottom.equalTo(contentView.safeAreaInsets.top)
+            $0.trailing.equalTo(contentView.safeAreaInsets.right).inset(20)
         }
         seperator.snp.makeConstraints{
             $0.leading.equalTo(title.snp.leading)

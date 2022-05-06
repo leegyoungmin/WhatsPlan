@@ -71,16 +71,21 @@ class TodayViewController:UIViewController{
     }
     
     func defaultAlert(){
-        let alert = UIAlertController(title:nil, message: nil, preferredStyle: .actionSheet)
-        let cancelButton = UIAlertAction(title: "취소", style: .cancel)
-        let confirmButton = UIAlertAction(title: "확인", style: .default)
+        let alert = UIAlertController(title: "일정추가", message: nil, preferredStyle: .alert)
+        alert.addTextField { textfield in
+            textfield.placeholder = "일정을 작성해주세요."
+        }
         
-        alert.addAction(cancelButton)
-        alert.addAction(confirmButton)
+        alert.addAction(UIAlertAction(title: "추가", style: .default, handler: { action in
+            guard let textfield = alert.textFields?.first as? UITextField,
+            let todo = textfield.text else{return}
+            self.saveTask(name: todo)
+            self.fetchData()
+            self.tableView.reloadData()
+        }))
         
-        let view = UIViewController()
-        view.view.backgroundColor = .secondarySystemBackground
-        alert.setValue(view, forKey: "contentViewController")
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
         self.present(alert, animated: true)
     }
     
@@ -172,15 +177,13 @@ extension TodayViewController:UITableViewDataSource{
         cell.toggleButton.isOn = plans[indexPath.row].done
         return cell
     }
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        true
-    }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        print("Commit")
-    }
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        self.plans.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-        print(plans)
+        print(indexPath.row)
+        if editingStyle == .delete{
+            if deleteObject(object: plans[indexPath.row]){
+                tableView.reloadData()
+            }
+        }
     }
     
 }
@@ -218,7 +221,7 @@ extension TodayViewController:CustomCellDelegate{
 extension TodayViewController{
     
     // 새로운 일정 저장 메소드
-    func saveTask(){
+    func saveTask(name:String){
         let context = Container.viewContext
         let task = NSEntityDescription.entity(forEntityName: "Plan", in: context)
         
@@ -226,7 +229,7 @@ extension TodayViewController{
             let task = NSManagedObject(entity: task, insertInto: context)
             task.setValue(UUID(), forKey: "id")
             task.setValue(false, forKey: "done")
-            task.setValue(inputTodoView.text, forKey: "name")
+            task.setValue(name, forKey: "name")
             task.setValue(Date(), forKey: "time")
             
             do{

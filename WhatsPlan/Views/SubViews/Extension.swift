@@ -123,36 +123,6 @@ class ToggleButton:UIButton{
     }
 }
 
-class ToggleLabel:UILabel{
-    var isOn:Bool = false{
-        didSet{
-            setting()
-        }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setting()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-        setting()
-    }
-    
-    
-    func setting(){
-        switch isOn{
-        case true:
-            self.attributedText = self.text?.strikeThrough(1)
-            self.textColor = .secondaryLabel
-        case false:
-            self.attributedText = self.text?.strikeThrough(0)
-            self.textColor = .label
-        }
-    }
-}
-
 extension UIViewController{
     func setKeyBoardObserver(){
         NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyBoardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
