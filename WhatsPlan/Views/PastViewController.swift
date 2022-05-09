@@ -37,19 +37,16 @@ class PastViewConrtoller:UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("view will Appeard")
+        print("viewWillAppear")
         fetchData()
         self.pastTableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View did load")
-        fetchData()
         setUpNavigationBar()
         setUpViews()
     }
-    
     func setUpNavigationBar(){
         self.navigationItem.title = "과거이력"
     }
@@ -115,6 +112,7 @@ extension PastViewConrtoller:UITableViewDataSource{
 
 extension PastViewConrtoller{
     func fetchData(){
+        self.plans.removeAll()
         let context = Container.viewContext
         do{
             let plans = try context.fetch(Plan.fetchRequest()) as! [Plan]

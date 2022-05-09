@@ -44,29 +44,6 @@ class ButtonWithPadding:UIButton{
     }
 }
 
-class RxTableViewController:UIViewController{
-    weak var tableView:UITableView!
-    let disposeBag = DisposeBag()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    private func bindTableView(){
-        let cities = ["London","Example1","Example2"]
-        let observer : Observable<[String]> = Observable.of(cities)
-        
-        observer.bind(to: tableView.rx.items){ (tableView:UITableView,index:Int,element:String) -> UITableViewCell in
-            
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else{return UITableViewCell()}
-            
-            cell.textLabel?.text = element
-            return cell
-        }.disposed(by: disposeBag)
-    }
-}
-
 class ToggleLabel:UILabel{
     var isOn:Bool = false{
         didSet{

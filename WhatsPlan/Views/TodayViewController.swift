@@ -151,8 +151,6 @@ extension TodayViewController:UITableViewDelegate{
 }
 
 extension TodayViewController:UITableViewDataSource{
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if plans.isEmpty{
@@ -168,6 +166,7 @@ extension TodayViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CustomCellView else{return UITableViewCell()}
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        cell.backgroundColor = .clear
         cell.selectionStyle = .none
         
         cell.delegate = self
@@ -185,7 +184,9 @@ extension TodayViewController:UITableViewDataSource{
             }
         }
     }
-    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
+    }
 }
 
 extension UITableView{
@@ -211,7 +212,7 @@ extension TodayViewController:CustomCellDelegate{
     func customCell(_ customCell: CustomCellView, didTapButton button: UIButton) {
         guard let indexPath = plans.firstIndex(where: {$0.id == customCell.id}) else{return}
         let object = self.plans[indexPath]
-        self.plans[indexPath].done.toggle()
+        object.done.toggle()
         if updateDone(object: object){
             self.tableView.reloadData()
         }
