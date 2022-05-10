@@ -61,8 +61,6 @@ class TodayViewController:UIViewController{
         setUpNavigationBar()
         setUpViews()
         fetchData()
-        setKeyBoardObserver()
-        
         addButton.rx.tap
             .bind{
                 self.defaultAlert()
@@ -151,8 +149,6 @@ extension TodayViewController:UITableViewDelegate{
 }
 
 extension TodayViewController:UITableViewDataSource{
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if plans.isEmpty{
@@ -168,6 +164,7 @@ extension TodayViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CustomCellView else{return UITableViewCell()}
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        cell.backgroundColor = .clear
         cell.selectionStyle = .none
         
         cell.delegate = self
@@ -185,7 +182,9 @@ extension TodayViewController:UITableViewDataSource{
             }
         }
     }
-    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
+    }
 }
 
 extension UITableView{
@@ -211,7 +210,8 @@ extension TodayViewController:CustomCellDelegate{
     func customCell(_ customCell: CustomCellView, didTapButton button: UIButton) {
         guard let indexPath = plans.firstIndex(where: {$0.id == customCell.id}) else{return}
         let object = self.plans[indexPath]
-        self.plans[indexPath].done.toggle()
+        object.done.toggle()
+        print(object.done)
         if updateDone(object: object){
             self.tableView.reloadData()
         }
@@ -269,9 +269,9 @@ extension TodayViewController{
     //TODO: - 완료 버튼 클릭 시 데이터 변경 메소드
     func updateDone(object:NSManagedObject)->Bool{
         let context = Container.viewContext
-        
         do{
             try context.save()
+            print(context.object(with: object.objectID))
             return true
         } catch {
             print("Error update done ::: \(error.localizedDescription)")

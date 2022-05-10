@@ -32,6 +32,7 @@ class PastCustomCell: UITableViewCell {
     }
     
     func setUpCell(){
+        contentView.backgroundColor = .clear
         [title,image].forEach{
             contentView.addSubview($0)
         }
