@@ -61,8 +61,6 @@ class TodayViewController:UIViewController{
         setUpNavigationBar()
         setUpViews()
         fetchData()
-        setKeyBoardObserver()
-        
         addButton.rx.tap
             .bind{
                 self.defaultAlert()
@@ -213,6 +211,7 @@ extension TodayViewController:CustomCellDelegate{
         guard let indexPath = plans.firstIndex(where: {$0.id == customCell.id}) else{return}
         let object = self.plans[indexPath]
         object.done.toggle()
+        print(object.done)
         if updateDone(object: object){
             self.tableView.reloadData()
         }
@@ -270,9 +269,9 @@ extension TodayViewController{
     //TODO: - 완료 버튼 클릭 시 데이터 변경 메소드
     func updateDone(object:NSManagedObject)->Bool{
         let context = Container.viewContext
-        
         do{
             try context.save()
+            print(context.object(with: object.objectID))
             return true
         } catch {
             print("Error update done ::: \(error.localizedDescription)")
