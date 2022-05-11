@@ -10,5 +10,6 @@ import Foundation
 struct plan{
     var id = UUID()
     var name:String
-    var time:Date
+    var time = Date()
+    var done:Bool
 }

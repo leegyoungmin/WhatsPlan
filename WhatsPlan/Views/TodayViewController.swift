@@ -14,6 +14,7 @@ import SnapKit
 
 class TodayViewController:UIViewController{
     let disposeBag = DisposeBag()
+    let manager = PlanManger.shared
     var plans:[Plan] = []
     
     lazy var inputTodoView:TextFieldWithPadding = {
@@ -41,26 +42,17 @@ class TodayViewController:UIViewController{
         return table
     }()
     
-    lazy var Container:NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "WhatsPlan")
-        container.loadPersistentStores { description, error in
-            if let error = error as NSError? {
-                print("Error in read container ::: \(error)")
-            }else{
-                print(container.name)
-            }
-        }
-        
-        return container
-    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpNavigationBar()
         setUpViews()
-        fetchData()
+        
+        let request:NSFetchRequest<Plan> = Plan.fetchRequest()
+        manager.plans = manager.fetch(request: request)
+        self.manager.dates = self.manager.plans.map{self.getStringDate($0.time!)}
+        
+        
         addButton.rx.tap
             .bind{
                 self.defaultAlert()
@@ -77,9 +69,14 @@ class TodayViewController:UIViewController{
         alert.addAction(UIAlertAction(title: "추가", style: .default, handler: { action in
             guard let textfield = alert.textFields?.first as? UITextField,
             let todo = textfield.text else{return}
-            self.saveTask(name: todo)
-            self.fetchData()
-            self.tableView.reloadData()
+            let plan = plan(name: todo, done: false)
+            
+            if self.manager.insertNewTask(plan: plan){
+                let request:NSFetchRequest<Plan> = Plan.fetchRequest()
+                self.manager.plans = self.manager.fetch(request: request)
+                self.manager.dates = self.manager.plans.map{self.getStringDate($0.time!)}
+                self.tableView.reloadData()
+            }
         }))
         
         alert.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -150,34 +147,40 @@ extension TodayViewController:UITableViewDelegate{
 
 extension TodayViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if plans.isEmpty{
-            self.tableView.setEmptyMessage("예정된 일정이 없습니다.")
-        }else{
+        let data = manager.plans.filter{getStringDate($0.time!) == getStringDate(Date())}
+        if data.isEmpty{
+            self.tableView.setEmptyMessage("오늘 일정이 없어요")
+        } else{
             self.tableView.reStore()
         }
         
-        return plans.count
-        
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CustomCellView else{return UITableViewCell()}
+        let data = manager.plans.filter{getStringDate($0.time!) == getStringDate(Date())}
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         
         cell.delegate = self
-        cell.id = plans[indexPath.row].id
-        cell.title.text = plans[indexPath.row].name
-        cell.title.isOn = plans[indexPath.row].done
-        cell.toggleButton.isOn = plans[indexPath.row].done
+        
+        cell.id = data[indexPath.row].id
+        cell.title.text = data[indexPath.row].name
+        cell.title.isOn = data[indexPath.row].done
+        cell.toggleButton.isOn = data[indexPath.row].done
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         print(indexPath.row)
+        let data = manager.plans.filter{ getStringDate($0.time!) == getStringDate(Date()) }
         if editingStyle == .delete{
-            if deleteObject(object: plans[indexPath.row]){
+            if manager.delete(object: data[indexPath.row]){
+                let request:NSFetchRequest<Plan> = Plan.fetchRequest()
+                manager.plans = manager.fetch(request: request)
+                self.manager.dates = manager.plans.map{getStringDate($0.time!)}
+                
                 tableView.reloadData()
             }
         }
@@ -208,82 +211,90 @@ extension UITableView{
 }
 extension TodayViewController:CustomCellDelegate{
     func customCell(_ customCell: CustomCellView, didTapButton button: UIButton) {
-        guard let indexPath = plans.firstIndex(where: {$0.id == customCell.id}) else{return}
-        let object = self.plans[indexPath]
-        object.done.toggle()
-        print(object.done)
-        if updateDone(object: object){
-            self.tableView.reloadData()
+        guard let indexPath = manager.plans.firstIndex(where: {$0.id == customCell.id}) else{return}
+        let object = manager.plans[indexPath]
+        
+        if self.manager.update(object: object){
+            self.manager.plans = manager.fetch(request: Plan.fetchRequest())
+            self.manager.dates = manager.plans.map{getStringDate($0.time!)}
+            tableView.reloadData()
         }
+        
+//        if updateDone(object: object, done: !object.done){
+//            self.fetchData()
+//            self.tableView.reloadData()
+//        }
     }
 }
 
 extension TodayViewController{
     
-    // 새로운 일정 저장 메소드
-    func saveTask(name:String){
-        let context = Container.viewContext
-        let task = NSEntityDescription.entity(forEntityName: "Plan", in: context)
-        
-        if let task = task {
-            let task = NSManagedObject(entity: task, insertInto: context)
-            task.setValue(UUID(), forKey: "id")
-            task.setValue(false, forKey: "done")
-            task.setValue(name, forKey: "name")
-            task.setValue(Date(), forKey: "time")
-            
-            do{
-                try context.save()
-            } catch {
-                print("Error in save Method ::: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    // 저장된 데이터 불러오기 메소드
-    func fetchData(){
-        let context = Container.viewContext
-        do{
-            let plan = try context.fetch(Plan.fetchRequest()) as! [Plan]
-            self.plans = plan.filter({getStringDate($0.time!) == getStringDate(Date())})
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    //TODO: - 개별 삭제 메소드
-    func deleteObject(object:NSManagedObject)->Bool{
-        let context = Container.viewContext
-        context.delete(object)
-        
-        do{
-            try context.save()
-            self.fetchData()
-            return true
-        } catch {
-            context.rollback()
-            return false
-        }
-    }
-    
-    //TODO: - 완료 버튼 클릭 시 데이터 변경 메소드
-    func updateDone(object:NSManagedObject)->Bool{
-        let context = Container.viewContext
-        do{
-            try context.save()
-            print(context.object(with: object.objectID))
-            return true
-        } catch {
-            print("Error update done ::: \(error.localizedDescription)")
-            context.rollback()
-            return false
-        }
-    }
-    
+//    // 새로운 일정 저장 메소드
+//    func saveTask(name:String){
+//        let context = Container.viewContext
+//        let task = NSEntityDescription.entity(forEntityName: "Plan", in: context)
+//
+//        if let task = task {
+//            let task = NSManagedObject(entity: task, insertInto: context)
+//            task.setValue(UUID(), forKey: "id")
+//            task.setValue(false, forKey: "done")
+//            task.setValue(name, forKey: "name")
+//            task.setValue(Date(), forKey: "time")
+//
+//            do{
+//                try context.save()
+//            } catch {
+//                print("Error in save Method ::: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+//
+//    // 저장된 데이터 불러오기 메소드
+//    func fetchData(){
+//        let context = Container.viewContext
+//        do{
+//            let plan = try context.fetch(Plan.fetchRequest()) as! [Plan]
+//            self.plans = plan.filter({getStringDate($0.time!) == getStringDate(Date())})
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
+//
+//    //TODO: - 개별 삭제 메소드
+//    func deleteObject(object:NSManagedObject)->Bool{
+//        let context = Container.viewContext
+//        context.delete(object)
+//
+//        do{
+//            try context.save()
+//            self.fetchData()
+//            return true
+//        } catch {
+//            context.rollback()
+//            return false
+//        }
+//    }
+//
+//    //TODO: - 완료 버튼 클릭 시 데이터 변경 메소드
+//    func updateDone(object:NSManagedObject,done:Bool)->Bool{
+//        let context = Container.viewContext
+//        object.setValue(done, forKey: "done")
+//
+//        do{
+//            try context.save()
+//            print("Context update success")
+//            print(context.object(with: object.objectID))
+//            return true
+//        } catch {
+//            print("Error update done ::: \(error.localizedDescription)")
+//            context.rollback()
+//            return false
+//        }
+//    }
     
     func getStringDate(_ time:Date)->String{
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "M월 dd일"
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: time)
     }

@@ -12,6 +12,7 @@ import CoreData
 import FSCalendar
 
 class PastViewConrtoller:UIViewController{
+    let manager = PlanManger.shared
     var dates:[String] = []
     var selectedDate:Date = Date()
     var plans:[Plan] = []
@@ -69,10 +70,9 @@ class PastViewConrtoller:UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("View Will Appear")
-        self.plans.removeAll()
-        fetchData()
-        self.pastTableView.reloadData()
+        calendar.reloadData()
+//        self.fetchData()
+        pastTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -143,25 +143,19 @@ extension PastViewConrtoller:UITableViewDelegate{
 }
 extension PastViewConrtoller:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let data = plans.filter{
-            getStringDate($0.time!) == getStringDate(calendar.selectedDate!)
+        let data = manager.plans.filter{
+            getStringDate($0.time!) == getStringDate(self.selectedDate)
         }
         return data.count
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let data = plans.filter{
-            getStringDate($0.time!) == getStringDate(calendar.selectedDate!)
-        }
-        return "\(data.filter({$0.done == true}).count)/\(data.count)"
+        return "\(plans.filter{$0.done == true}.count)/\(plans.count)"
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? PastCustomCell else{return UITableViewCell()}
-
-        let data = plans.filter{
-            getStringDate($0.time!) == getStringDate(calendar.selectedDate!)
-            
-        }
-        print(data[indexPath.row])
+        let data = manager.plans.filter{ getStringDate($0.time!) == getStringDate(selectedDate) }
+        print(data)
+        
         cell.selectionStyle = .none
         cell.title.text = data[indexPath.row].name
         
@@ -170,14 +164,16 @@ extension PastViewConrtoller:UITableViewDataSource{
         }else{
             cell.image.image = UIImage(systemName: "circle")
         }
-
+        
         return cell
     }
 }
 
 extension PastViewConrtoller:FSCalendarDelegate{
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        if dates.contains(getStringDate(date)){
+        print(manager.dates)
+        print(getStringDate(date))
+        if manager.dates.contains(getStringDate(date)){
             return 1
         }else{
             return 0
@@ -187,8 +183,8 @@ extension PastViewConrtoller:FSCalendarDelegate{
 
 extension PastViewConrtoller:FSCalendarDataSource{
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        self.selectedDate = date
         self.fetchData()
-        print(self.plans[0])
         self.pastTableView.reloadData()
     }
     
@@ -202,14 +198,14 @@ extension PastViewConrtoller{
     func fetchData(){
         self.plans.removeAll()
         let context = Container.viewContext
-        do{
-            let plans = try context.fetch(Plan.fetchRequest()) as! [Plan]
-            settingDate(plans)
-            print(plans[0])
-            self.plans = plans
-        } catch {
-            print(error.localizedDescription)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
+        let plans = try! context.fetch(fetchRequest) as! [Plan]
+        settingDate(plans)
+        self.plans = plans.filter{
+            getStringDate($0.time!) == getStringDate(self.selectedDate)
         }
+        print("fetch data in past viewcontroller")
+        print(self.plans)
     }
     
     func settingDate(_ plans:[Plan]){

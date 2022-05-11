@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18712DE7282B911D00CAC6A4 /* PlanManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18712DE6282B911D00CAC6A4 /* PlanManger.swift */; };
 		18B62848281A71F9006276E1 /* CustomSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62847281A71F9006276E1 /* CustomSectionHeaderView.swift */; };
 		18B6284E281A7F0D006276E1 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B6284D281A7F0D006276E1 /* Extension.swift */; };
 		18B62851281BBC8F006276E1 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 18B62850281BBC8F006276E1 /* RxCocoa */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18712DE6282B911D00CAC6A4 /* PlanManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanManger.swift; sourceTree = "<group>"; };
 		18B62847281A71F9006276E1 /* CustomSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionHeaderView.swift; sourceTree = "<group>"; };
 		18B6284D281A7F0D006276E1 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		18C6C8BF281FD02C00E9CE56 /* PastCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastCustomCell.swift; sourceTree = "<group>"; };
@@ -59,6 +61,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18712DE5282B911400CAC6A4 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				18712DE6282B911D00CAC6A4 /* PlanManger.swift */,
+				18E990C32817CA5700AE5553 /* plan.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		18B62846281A71E8006276E1 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,7 +86,6 @@
 				18E990B62817C7FE00AE5553 /* Assets.xcassets */,
 				18E990B82817C7FE00AE5553 /* LaunchScreen.storyboard */,
 				18E990B32817C7FE00AE5553 /* WhatsPlan.xcdatamodeld */,
-				18E990C32817CA5700AE5553 /* plan.swift */,
 				18E990AA2817C7FE00AE5553 /* AppDelegate.swift */,
 				18E990AC2817C7FE00AE5553 /* SceneDelegate.swift */,
 			);
@@ -101,6 +111,7 @@
 		18E990A92817C7FE00AE5553 /* WhatsPlan */ = {
 			isa = PBXGroup;
 			children = (
+				18712DE5282B911400CAC6A4 /* Manager */,
 				18E990BB2817C7FE00AE5553 /* Info.plist */,
 				18CBBE002828E61400E3A254 /* Resources */,
 				18B6284D281A7F0D006276E1 /* Extension.swift */,
@@ -201,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18712DE7282B911D00CAC6A4 /* PlanManger.swift in Sources */,
 				18E990C82817CFCF00AE5553 /* PastViewController.swift in Sources */,
 				18C6C8C0281FD02C00E9CE56 /* PastCustomCell.swift in Sources */,
 				18E990B52817C7FE00AE5553 /* WhatsPlan.xcdatamodeld in Sources */,
