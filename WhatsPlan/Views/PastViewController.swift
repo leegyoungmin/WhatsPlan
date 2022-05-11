@@ -149,13 +149,15 @@ extension PastViewConrtoller:UITableViewDataSource{
         return data.count
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(plans.filter{$0.done == true}.count)/\(plans.count)"
+        let data = manager.plans.filter{
+            getStringDate($0.time!) == getStringDate(self.selectedDate)
+        }
+        return "\(data.filter{$0.done == true}.count)/\(data.count)"
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? PastCustomCell else{return UITableViewCell()}
         let data = manager.plans.filter{ getStringDate($0.time!) == getStringDate(selectedDate) }
-        print(data)
-        
+
         cell.selectionStyle = .none
         cell.title.text = data[indexPath.row].name
         
@@ -171,8 +173,6 @@ extension PastViewConrtoller:UITableViewDataSource{
 
 extension PastViewConrtoller:FSCalendarDelegate{
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        print(manager.dates)
-        print(getStringDate(date))
         if manager.dates.contains(getStringDate(date)){
             return 1
         }else{
@@ -184,7 +184,6 @@ extension PastViewConrtoller:FSCalendarDelegate{
 extension PastViewConrtoller:FSCalendarDataSource{
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         self.selectedDate = date
-        self.fetchData()
         self.pastTableView.reloadData()
     }
     
@@ -195,27 +194,6 @@ extension PastViewConrtoller:FSCalendarDataSource{
 }
 
 extension PastViewConrtoller{
-    func fetchData(){
-        self.plans.removeAll()
-        let context = Container.viewContext
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
-        let plans = try! context.fetch(fetchRequest) as! [Plan]
-        settingDate(plans)
-        self.plans = plans.filter{
-            getStringDate($0.time!) == getStringDate(self.selectedDate)
-        }
-        print("fetch data in past viewcontroller")
-        print(self.plans)
-    }
-    
-    func settingDate(_ plans:[Plan]){
-        plans.forEach{
-            if !self.dates.contains(getStringDate($0.time!)){
-                self.dates.append(getStringDate($0.time!))
-            }
-        }
-    }
-    
     func getStringDate(_ time:Date)->String{
         let formatter = DateFormatter()
         formatter.dateFormat = "M월 dd일"
