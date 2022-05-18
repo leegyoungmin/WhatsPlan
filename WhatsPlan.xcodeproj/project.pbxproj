@@ -14,6 +14,7 @@
 		180014F32833E5D40048A0BA /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180014F22833E5D40048A0BA /* HeaderView.swift */; };
 		180014F52833F6740048A0BA /* TaskAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180014F42833F6740048A0BA /* TaskAddView.swift */; };
 		18712DE7282B911D00CAC6A4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18712DE6282B911D00CAC6A4 /* Persistence.swift */; };
+		18718EDB283529B20077DA56 /* PastCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18718EDA283529B20077DA56 /* PastCalendarView.swift */; };
 		18B6284E281A7F0D006276E1 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B6284D281A7F0D006276E1 /* Extension.swift */; };
 		18B62851281BBC8F006276E1 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 18B62850281BBC8F006276E1 /* RxCocoa */; };
 		18B62853281BBC8F006276E1 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 18B62852281BBC8F006276E1 /* RxSwift */; };
@@ -47,6 +48,7 @@
 		180014F22833E5D40048A0BA /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		180014F42833F6740048A0BA /* TaskAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddView.swift; sourceTree = "<group>"; };
 		18712DE6282B911D00CAC6A4 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		18718EDA283529B20077DA56 /* PastCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastCalendarView.swift; sourceTree = "<group>"; };
 		18B6284D281A7F0D006276E1 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		18E990A72817C7FE00AE5553 /* WhatsPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18E990B42817C7FE00AE5553 /* WhatsPlan.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatsPlan.xcdatamodel; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				180014ED28339CEF0048A0BA /* TodayView.swift */,
 				180014EF2833A1440048A0BA /* TodayCellView.swift */,
 				180014F42833F6740048A0BA /* TaskAddView.swift */,
+				18718EDA283529B20077DA56 /* PastCalendarView.swift */,
 			);
 			path = TodayViews;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				180014F02833A1440048A0BA /* TodayCellView.swift in Sources */,
 				180014E8283394C60048A0BA /* WhatsPlanApp.swift in Sources */,
 				18B6284E281A7F0D006276E1 /* Extension.swift in Sources */,
+				18718EDB283529B20077DA56 /* PastCalendarView.swift in Sources */,
 				180014F52833F6740048A0BA /* TaskAddView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

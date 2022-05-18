@@ -46,6 +46,52 @@ extension View{
     }
 }
 
+struct TabBarAccessor:UIViewControllerRepresentable{
+    
+    var callBack:(UITabBar)->Void = { _ in }
+    
+    // 대신해서 넘겨준다.
+    private let proxyController = HelperViewController()
+    func makeUIViewController(context: UIViewControllerRepresentableContext<TabBarAccessor>) -> UIViewController {
+        
+        proxyController.callBack = callBack
+        
+        return proxyController
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context:UIViewControllerRepresentableContext<TabBarAccessor>) {
+        
+    }
+    
+    //탭 바를 가져오기 위한 헬퍼 뷰 컨트롤러
+    private class HelperViewController:UIViewController{
+        
+        var callBack:(UITabBar)->Void = { _ in }
+        
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            if let tabBarController = self.tabBarController{
+                //탭바 컨트롤러의 탭바를 클로져로 보낸다.
+                callBack(tabBarController.tabBar)
+            }
+        }
+        
+    }
+}
+
+extension View{
+    /// 탭바 숨김 처리 여부 설정
+    /// - Parameter isHidden:
+    /// - Returns :
+    func setTabBarVisible(isHidden:Bool) -> some View{
+        background(
+            TabBarAccessor(callBack: { tabBar in
+                tabBar.isHidden = true
+            })
+        )
+    }
+}
 
 //
 //extension UIStackView{

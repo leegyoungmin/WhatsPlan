@@ -22,15 +22,57 @@ struct TodayCellView: View {
         dateFormatter.dateFormat = "MM월 dd일"
         return dateFormatter.string(from: date)
     }
+    
+    private func updateObject(){
+        do{
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError?
+            print("Error in update Object \(nsError)")
+        }
+    }
     var body: some View {
         HStack{
             RoundedRectangle(cornerRadius: 3)
-                .foregroundColor(.white)
+                .foregroundColor(.accentColor)
                 .frame(width:10)
-            Text(item.name ?? "")
+
             Spacer()
-            Text(changeDateToString(item.time))
+            
+            Toggle(isOn: $item.done) {
+                VStack(alignment:.leading){
+                    Text(item.name ?? "")
+                        .font(.system(.title, design: .rounded))
+                        .fontWeight(.heavy)
+                    Text(changeDateToString(item.time))
+                }
+            }
+            .toggleStyle(CheckBoxStyle())
+            .onChange(of: item.done) { newValue in
+                updateObject()
+            }
         }
-        .foregroundColor(.white)
+        .foregroundColor(.accentColor)
+    }
+}
+
+struct CheckBoxStyle:ToggleStyle{
+    func makeBody(configuration: Configuration) -> some View {
+        return
+        HStack{
+            configuration.label
+            
+            Spacer()
+            
+            Image(systemName: configuration.isOn ? "checkmark.circle.fill":"circle")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundColor(.accentColor)
+                .font(.system(size: 20, weight: .bold, design: .default))
+                .onTapGesture {
+                    configuration.isOn.toggle()
+                }
+        }
+
     }
 }
